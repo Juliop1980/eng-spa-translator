@@ -1,3 +1,5 @@
+import string
+
 import matplotlib.pyplot as plt
 import numpy as np
 from statistics import mean
@@ -118,11 +120,13 @@ spanish_sentences_preprocessed = []
 for sentence in english_sentences:
     if sentence[0] != '<' and sentence != '':
         sentence = sentence.lower()
+        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
         english_sentences_preprocessed.append(sentence)
 
 for sentence in spanish_sentences:
     if sentence[0] != '<' and sentence != '':
         sentence = sentence.lower()
+        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
         spanish_sentences_preprocessed.append(sentence)
 
 nb_sentences = len(spanish_sentences_preprocessed)
