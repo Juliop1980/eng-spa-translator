@@ -1,28 +1,55 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from statistics import mean
 
-filename="es-en/europarl-v7.es-en.en"
+filename = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 english_sentences_character_length = []
 with open(filename, 'r', encoding='UTF-8') as file:
     for line in file:
-        #print(line.rstrip())
+        # print(line.rstrip())
         if line.rstrip() != "":
             english_sentences_character_length.append(len(line.rstrip()))
             english_sentences.append(line.rstrip())
 
-
-filename="es-en/europarl-v7.es-en.es"
+filename = "es-en/europarl-v7.es-en.es"
 spanish_sentences = []
 spanish_sentences_character_length = []
 
 with open(filename, 'r', encoding='UTF-8') as file:
     for line in file:
-        #print(line.rstrip())
+        # print(line.rstrip())
         if line.rstrip() != "":
             spanish_sentences_character_length.append(len(line.rstrip()))
             spanish_sentences.append(line.rstrip())
-#print(spanish_sentences_character_length)
+
+
+# print(spanish_sentences_character_length)
+
+# average number of characters in word
+
+def list_nb_char_in_words(list_of_sentences: list[str], list_of_lengths) -> list[int]:
+    for sentence in list_of_sentences:
+        for word in sentence.split():
+            list_of_lengths.append(len(word))
+    return list_of_lengths
+
+
+english_word_length = list_nb_char_in_words(english_sentences, [])
+spanish_word_length = list_nb_char_in_words(spanish_sentences, [])
+
+print("Average length of English word :" + str(mean(english_word_length)))
+print("Average length of Spanish word :" + str(mean(spanish_word_length)))
+
+# total number of sentences
+nb_tot_sentences_in_corpus = len(english_sentences) + len(spanish_sentences)
+print("There are " + str(nb_tot_sentences_in_corpus) + " sentences in the corpus.")
+
+# average length
+avg_length_english = mean(english_sentences_character_length)
+print("Average length of an English sentence : " + str(avg_length_english))
+avg_length_spanish = mean(spanish_sentences_character_length)
+print("Average length of a Spanish sentence : " + str(avg_length_spanish))
 
 list_of_lengths_all = english_sentences_character_length + spanish_sentences_character_length
 data = [english_sentences_character_length, spanish_sentences_character_length]
@@ -69,7 +96,7 @@ for flier in bp['fliers']:
 ax.set_yticklabels(['English', 'Spanish'])
 
 # Adding title
-plt.title("Comparison of length between english and spanish sentences")
+plt.title("Comparison of length between English and Spanish sentences")
 
 # Removing top axes and right axes
 # ticks
