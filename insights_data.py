@@ -117,12 +117,12 @@ english_sentences_preprocessed = []
 spanish_sentences_preprocessed = []
 for sentence in english_sentences:
     if sentence[0] != '<' and sentence != '':
-        sentence.lower()
+        sentence = sentence.lower()
         english_sentences_preprocessed.append(sentence)
 
 for sentence in spanish_sentences:
     if sentence[0] != '<' and sentence != '':
-        sentence.lower()
+        sentence = sentence.lower()
         spanish_sentences_preprocessed.append(sentence)
 
 nb_sentences = len(spanish_sentences_preprocessed)
@@ -130,5 +130,5 @@ indexes = range(nb_sentences)
 indexes_ten_percent = np.random.choice(indexes, int(nb_sentences/10))
 english_sentences_preprocessed = [english_sentences_preprocessed[i] for i in indexes_ten_percent]
 spanish_sentences_preprocessed = [spanish_sentences_preprocessed[i] for i in indexes_ten_percent]
-print(english_sentences_preprocessed)
-# np.savetxt("pre-processed_data.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
+np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
+np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
