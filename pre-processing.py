@@ -20,6 +20,7 @@ nb_sentences_en = len(english_sentences)
 # print("nb es sentences : " + str(nb_sentences_es))
 
 indexes = range(nb_sentences_en)
+# to randomly select 10 percent of the data
 indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 10))
 english_sentences = [english_sentences[i] for i in indexes_ten_percent]
 spanish_sentences = [spanish_sentences[i] for i in indexes_ten_percent]
@@ -40,7 +41,7 @@ def pre_process_list(list_sentences: list[str], list_preprocessed: list[str], la
             curr_sentence = curr_sentence.lower()
             # remove punctuation
             curr_sentence = curr_sentence.translate(str.maketrans('', '', string.punctuation))
-            # change numbers into word equivalents
+            # change numbers into word equivalents and remove white spaces
             curr_sentence = ' '.join([num2words.num2words(word, lang=language) if word.isdigit() else word
                                       for word in curr_sentence.split()])
             list_preprocessed.append(curr_sentence)
