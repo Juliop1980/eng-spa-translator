@@ -1,16 +1,12 @@
-import string
-
 import matplotlib.pyplot as plt
 import numpy as np
 from statistics import mean
-import csv
 
 filename = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 english_sentences_character_length = []
 with open(filename, 'r', encoding='UTF-8') as file:
     for line in file:
-        # print(line.rstrip())
         if line.rstrip() != "":
             english_sentences_character_length.append(len(line.rstrip()))
             english_sentences.append(line.rstrip())
@@ -21,28 +17,25 @@ spanish_sentences_character_length = []
 
 with open(filename, 'r', encoding='UTF-8') as file:
     for line in file:
-        # print(line.rstrip())
         if line.rstrip() != "":
             spanish_sentences_character_length.append(len(line.rstrip()))
             spanish_sentences.append(line.rstrip())
 
 
-# print(spanish_sentences_character_length)
-
 # average number of characters in word
 
 def list_nb_char_in_words(list_of_sentences: list[str], list_of_lengths) -> list[int]:
-    for sentence in list_of_sentences:
-        for word in sentence.split():
+    for curr_sentence in list_of_sentences:
+        for word in curr_sentence.split():
             list_of_lengths.append(len(word))
     return list_of_lengths
 
 
-# english_word_length = list_nb_char_in_words(english_sentences, [])
-# spanish_word_length = list_nb_char_in_words(spanish_sentences, [])
+english_word_length = list_nb_char_in_words(english_sentences, [])
+spanish_word_length = list_nb_char_in_words(spanish_sentences, [])
 
-# print("Average length of English word :" + str(mean(english_word_length)))
-# print("Average length of Spanish word :" + str(mean(spanish_word_length)))
+print("Average length of English word :" + str(mean(english_word_length)))
+print("Average length of Spanish word :" + str(mean(spanish_word_length)))
 
 # total number of sentences
 nb_tot_sentences_in_corpus = len(english_sentences) + len(spanish_sentences)
@@ -113,26 +106,3 @@ plt.xlabel("Number of characters in sentences")
 # Uncomment next line if you want to save the plot
 plt.savefig("insights_of_data/Comparison_length_english_spanish.png")
 
-
-# pre-processing
-english_sentences_preprocessed = []
-spanish_sentences_preprocessed = []
-for sentence in english_sentences:
-    if sentence[0] != '<' and sentence != '':
-        sentence = sentence.lower()
-        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
-        english_sentences_preprocessed.append(sentence)
-
-for sentence in spanish_sentences:
-    if sentence[0] != '<' and sentence != '':
-        sentence = sentence.lower()
-        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
-        spanish_sentences_preprocessed.append(sentence)
-
-nb_sentences = len(spanish_sentences_preprocessed)
-indexes = range(nb_sentences)
-indexes_ten_percent = np.random.choice(indexes, int(nb_sentences/10))
-english_sentences_preprocessed = [english_sentences_preprocessed[i] for i in indexes_ten_percent]
-spanish_sentences_preprocessed = [spanish_sentences_preprocessed[i] for i in indexes_ten_percent]
-np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
-np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
