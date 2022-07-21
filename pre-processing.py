@@ -3,10 +3,12 @@ import string
 import num2words
 from typing import List
 from lxml import etree
+import csv
 
-tree = etree.parse('es-en/europarl-v7.es-en.en')
-notags = etree.tostring(tree, encoding='utf8', method='text')
-print(notags)
+
+#tree = etree.parse('es-en/europarl-v7.es-en.en')
+#notags = etree.tostring(tree, encoding='utf8', method='text')
+#print(notags)
 filename_en = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 with open(filename_en, 'r', encoding='UTF-8') as file:
@@ -40,20 +42,21 @@ spanish_sentences_preprocessed = []
 
 
 def pre_process_list(list_sentences: List[str], list_preprocessed: List[str], language: str) -> List[str]:
-    curr_sentence = curr_sentence.replace("<", "").replace(">", "")
+    #curr_sentence = curr_sentence.replace("<", "").replace(">", "")
     for curr_sentence in list_sentences:
-        if curr_sentence != '':
+        #if curr_sentence != '':
             # lowercase
-            curr_sentence = curr_sentence.lower()
-            # remove punctuation
-            curr_sentence = curr_sentence.translate(str.maketrans('', '', string.punctuation))
-            # change numbers into word equivalents and remove white spaces
-            curr_sentence = ' '.join([num2words.num2words(word, lang=language) if word.isdigit() else word
-                                      for word in curr_sentence.split()])
-            list_preprocessed.append(curr_sentence)
+        curr_sentence = curr_sentence.lower()
+        # remove punctuation
+        curr_sentence = curr_sentence.translate(str.maketrans('', '', string.punctuation))
+        # change numbers into word equivalents and remove white spaces
+        curr_sentence = ' '.join([num2words.num2words(word, lang=language) if word.isdigit() else word
+                                    for word in curr_sentence.split()])
+        list_preprocessed.append(curr_sentence)
     return list_preprocessed
 
-
+#print(len(english_sentences))
+#print(len(spanish_sentences))
 english_sentences_preprocessed = pre_process_list(english_sentences, english_sentences_preprocessed, "en")
 spanish_sentences_preprocessed = pre_process_list(spanish_sentences, spanish_sentences_preprocessed, "es")
 
@@ -63,3 +66,10 @@ spanish_sentences_preprocessed = pre_process_list(spanish_sentences, spanish_sen
 
 np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
 np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
+print(len(english_sentences_preprocessed))
+print(len(spanish_sentences_preprocessed))
+
+
+with open('mixedtranslation.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerows(zip(english_sentences_preprocessed, spanish_sentences_preprocessed))
