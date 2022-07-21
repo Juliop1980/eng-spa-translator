@@ -1,7 +1,12 @@
 import numpy as np
 import string
 import num2words
+from typing import List
+from lxml import etree
 
+tree = etree.parse('es-en/europarl-v7.es-en.en')
+notags = etree.tostring(tree, encoding='utf8', method='text')
+print(notags)
 filename_en = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 with open(filename_en, 'r', encoding='UTF-8') as file:
@@ -34,7 +39,8 @@ english_sentences_preprocessed = []
 spanish_sentences_preprocessed = []
 
 
-def pre_process_list(list_sentences: list[str], list_preprocessed: list[str], language: str) -> list[str]:
+def pre_process_list(list_sentences: List[str], list_preprocessed: List[str], language: str) -> List[str]:
+    curr_sentence = curr_sentence.replace("<", "").replace(">", "")
     for curr_sentence in list_sentences:
         if curr_sentence != '':
             # lowercase
@@ -51,9 +57,9 @@ def pre_process_list(list_sentences: list[str], list_preprocessed: list[str], la
 english_sentences_preprocessed = pre_process_list(english_sentences, english_sentences_preprocessed, "en")
 spanish_sentences_preprocessed = pre_process_list(spanish_sentences, spanish_sentences_preprocessed, "es")
 
-for i in range(100):
+""" for i in range(100):
     print(english_sentences_preprocessed[i])
-    print(spanish_sentences_preprocessed[i])
+    print(spanish_sentences_preprocessed[i]) """
 
 np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
 np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
