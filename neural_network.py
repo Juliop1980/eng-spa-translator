@@ -1,10 +1,22 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 # read csv input data
-data = pd.read_csv('pre-processed_data_en.csv', on_bad_lines='skip')
-print(data)
+data = pd.read_csv('mixedtranslation.csv')
+english_sentences = data['english_sentences']
+spanish_sentences = data['spanish_sentences']
+#print(data)
+#train, test = train_test_split(df, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(english_sentences, spanish_sentences, test_size=0.2, random_state=1)
 
+
+
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1) # 0.25 x 0.8 = 0.2
+
+print(X_train)
+print("------------")
+print(y_train)
 """ # Drop first column of dataframe
 df = df.iloc[:, 1:]
 dataTypeDict = dict(df.dtypes)
