@@ -68,8 +68,17 @@ np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimite
 np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
 print(len(english_sentences_preprocessed))
 print(len(spanish_sentences_preprocessed))
-
-
+""" 
+headerList = ['english_sentences', 'spanish_stences']
 with open('mixedtranslation.csv', 'w') as f:
-    writer = csv.writer(f)
-    writer.writerows(zip(english_sentences_preprocessed, spanish_sentences_preprocessed))
+    writer = csv.writer(f,fieldnames = headerList)
+    writer.writerows(zip(english_sentences_preprocessed, spanish_sentences_preprocessed)) """
+
+with open('mixedtranslation.csv', 'w') as csvfile:
+    fieldnames = ['english_sentences', 'spanish_sentences']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    for i in range(len(english_sentences_preprocessed)):
+        writer.writerow({'english_sentences': english_sentences_preprocessed[i], 'spanish_sentences': spanish_sentences_preprocessed[i]})
+
