@@ -4,6 +4,7 @@ import num2words
 from typing import List
 from lxml import etree
 import csv
+#from nltk.corpus import stopwords
 
 
 #tree = etree.parse('es-en/europarl-v7.es-en.en')
