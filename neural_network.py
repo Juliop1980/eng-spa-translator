@@ -93,6 +93,8 @@ def preprocess(x, y):
     return preprocess_x, preprocess_y, x_tk, y_tk
 
 preproc_english_sentences, preproc_spanish_sentences, english_tokenizer, spanish_tokenizer =preprocess(english_sentences, spanish_sentences)
+print(spanish_tokenizer)
+print("----------------------------------------------------------------------")
      
 max_english_sequence_length = preproc_english_sentences.shape[1]
 max_spanish_sequence_length = preproc_spanish_sentences.shape[1]
@@ -133,10 +135,10 @@ def simple_model(input_shape, output_sequence_length, english_vocab_size, french
     model = Sequential()
     model.add(GRU(128, input_shape=input_shape[1:], return_sequences=True))
     model.add(Dropout(0.5))
-    model.add(GRU(128, return_sequences=True))
-    model.add(Dropout(0.5))
+    #model.add(GRU(128, return_sequences=True))
+    #model.add(Dropout(0.5))
     model.add(TimeDistributed(Dense(256, activation='relu')))
-    model.add(Dropout(0.5))
+    #model.add(Dropout(0.5))
     model.add(TimeDistributed(Dense(french_vocab_size, activation='softmax'))) 
      
      
@@ -151,7 +153,7 @@ def simple_model(input_shape, output_sequence_length, english_vocab_size, french
 tmp_x = pad(preproc_english_sentences, max_spanish_sequence_length)
 tmp_x = tmp_x.reshape((-1, preproc_spanish_sentences.shape[-2], 1))
  
- 
+#print((tmp_x[:1])[0])
  
 # Train the neural network
 simple_rnn_model = simple_model(
@@ -159,7 +161,7 @@ simple_rnn_model = simple_model(
     max_spanish_sequence_length,
     english_vocab_size,
     spanish_vocab_size)
-simple_rnn_model.fit(tmp_x, preproc_spanish_sentences, batch_size=50, epochs=1, validation_split=0.2)
+simple_rnn_model.fit(tmp_x, preproc_spanish_sentences, batch_size=10, epochs=1, validation_split=0.2)
  
 # Print prediction(s)
 print(logits_to_text(simple_rnn_model.predict(tmp_x[:1])[0], spanish_tokenizer))
