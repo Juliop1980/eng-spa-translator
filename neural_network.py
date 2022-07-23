@@ -5,12 +5,15 @@ import collections
 import numpy as np
 from keras.preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
-from keras.models import Model
-from keras.layers import GRU, Input, Dense, TimeDistributed, Activation, RepeatVector, Bidirectional
+from keras.models import Model, Sequential
+from keras.layers import GRU, Input, Dense, TimeDistributed, Activation, RepeatVector, Bidirectional, Dropout, LSTM
 from tensorflow.keras.layers import Embedding
 from keras.optimizers import Adam
 from keras.losses import sparse_categorical_crossentropy
 #from nltk.tokenize import tokenize
+
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
 
@@ -114,6 +117,52 @@ def logits_to_text(logits, tokenizer):
     index_to_words[0] = '<PAD>'
  
     return ' '.join([index_to_words[prediction] for prediction in np.argmax(logits, 1)])
+
+
+def simple_model(input_shape, output_sequence_length, english_vocab_size, french_vocab_size):
+    """
+    Build and train a basic RNN on x and y
+    :param input_shape: Tuple of input shape
+    :param output_sequence_length: Length of output sequence
+    :param english_vocab_size: Number of unique English words in the dataset
+    :param french_vocab_size: Number of unique French words in the dataset
+    :return: Keras model built, but not trained
+    """
+    # TODO: Build the layers
+    learning_rate = 1e-3
+    model = Sequential()
+    model.add(GRU(128, input_shape=input_shape[1:], return_sequences=True))
+    model.add(Dropout(0.5))
+    model.add(GRU(128, return_sequences=True))
+    model.add(Dropout(0.5))
+    model.add(TimeDistributed(Dense(256, activation='relu')))
+    model.add(Dropout(0.5))
+    model.add(TimeDistributed(Dense(french_vocab_size, activation='softmax'))) 
+     
+     
+    model.compile(loss=sparse_categorical_crossentropy,
+                  optimizer=Adam(learning_rate),
+                  metrics=['accuracy'])
+    return model
+
+#tests.test_simple_model(simple_model)
+ 
+# Reshaping the input to work with a basic RNN
+tmp_x = pad(preproc_english_sentences, max_spanish_sequence_length)
+tmp_x = tmp_x.reshape((-1, preproc_spanish_sentences.shape[-2], 1))
+ 
+ 
+ 
+# Train the neural network
+simple_rnn_model = simple_model(
+    tmp_x.shape,
+    max_spanish_sequence_length,
+    english_vocab_size,
+    spanish_vocab_size)
+simple_rnn_model.fit(tmp_x, preproc_spanish_sentences, batch_size=50, epochs=1, validation_split=0.2)
+ 
+# Print prediction(s)
+print(logits_to_text(simple_rnn_model.predict(tmp_x[:1])[0], spanish_tokenizer))
 """ for sample_i, (sent, token_sent) in enumerate(zip(text_sentences, text_tokenized)):
     print('Sequence {} in x'.format(sample_i + 1))
     print('  Input:  {}'.format(sent))
