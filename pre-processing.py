@@ -29,7 +29,7 @@ nb_sentences_en = len(english_sentences)
 
 indexes = range(nb_sentences_en)
 # to randomly select 10 percent of the data
-indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 10))
+indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 100))
 english_sentences = [english_sentences[i] for i in indexes_ten_percent]
 spanish_sentences = [spanish_sentences[i] for i in indexes_ten_percent]
 
