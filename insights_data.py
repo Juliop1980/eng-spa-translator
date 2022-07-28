@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from statistics import mean
-<<<<<<< HEAD
-=======
 from typing import List
->>>>>>> refs/remotes/origin/main
 
 filename = "es-en/europarl-v7.es-en.en"
 english_sentences = []
@@ -28,11 +25,7 @@ with open(filename, 'r', encoding='UTF-8') as file:
 
 # average number of characters in word
 
-<<<<<<< HEAD
-def list_nb_char_in_words(list_of_sentences: list[str], list_of_lengths) -> list[int]:
-=======
 def list_nb_char_in_words(list_of_sentences: List[str], list_of_lengths) -> List[int]:
->>>>>>> refs/remotes/origin/main
     for curr_sentence in list_of_sentences:
         for word in curr_sentence.split():
             list_of_lengths.append(len(word))

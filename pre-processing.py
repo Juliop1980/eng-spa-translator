@@ -1,9 +1,7 @@
 import numpy as np
 import string
 import num2words
-<<<<<<< HEAD
 
-=======
 from typing import List
 from lxml import etree
 import csv
@@ -13,7 +11,6 @@ import csv
 #tree = etree.parse('es-en/europarl-v7.es-en.en')
 #notags = etree.tostring(tree, encoding='utf8', method='text')
 #print(notags)
->>>>>>> refs/remotes/origin/main
 filename_en = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 with open(filename_en, 'r', encoding='UTF-8') as file:
@@ -33,11 +30,8 @@ nb_sentences_en = len(english_sentences)
 
 indexes = range(nb_sentences_en)
 # to randomly select 10 percent of the data
-<<<<<<< HEAD
 indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 10))
-=======
 indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 100))
->>>>>>> refs/remotes/origin/main
 english_sentences = [english_sentences[i] for i in indexes_ten_percent]
 spanish_sentences = [spanish_sentences[i] for i in indexes_ten_percent]
 
@@ -49,8 +43,6 @@ spanish_sentences = [spanish_sentences[i] for i in indexes_ten_percent]
 english_sentences_preprocessed = []
 spanish_sentences_preprocessed = []
 
-
-<<<<<<< HEAD
 def pre_process_list(list_sentences: list[str], list_preprocessed: list[str], language: str) -> list[str]:
     for curr_sentence in list_sentences:
         if curr_sentence != '':
@@ -74,7 +66,6 @@ for i in range(100):
 
 np.savetxt("pre-processed_data_en.csv", english_sentences_preprocessed, delimiter=" ", fmt='%s')
 np.savetxt("pre-processed_data_es.csv", spanish_sentences_preprocessed, delimiter=" ", fmt='%s')
-=======
 def pre_process_list(list_sentences: List[str], list_preprocessed: List[str], language: str) -> List[str]:
     #curr_sentence = curr_sentence.replace("<", "").replace(">", "")
     for curr_sentence in list_sentences:
@@ -116,4 +107,3 @@ with open('mixedtranslation.csv', 'w') as csvfile:
     for i in range(len(english_sentences_preprocessed)):
         writer.writerow({'english_sentences': english_sentences_preprocessed[i], 'spanish_sentences': spanish_sentences_preprocessed[i]})
 
->>>>>>> refs/remotes/origin/main
