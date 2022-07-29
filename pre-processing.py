@@ -39,7 +39,6 @@ spanish_sentences_preprocessed = []
 
 def pre_process_list(list_sentences: list[str], list_preprocessed: list[str], language: str) -> list[str]:
     for curr_sentence in list_sentences:
-        # if curr_sentence != '':
         # lowercase
         curr_sentence = curr_sentence.lower()
         # remove punctuation
