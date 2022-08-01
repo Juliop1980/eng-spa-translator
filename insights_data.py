@@ -107,3 +107,24 @@ plt.xlabel("Number of characters in sentences")
 # Uncomment next line if you want to save the plot
 plt.savefig("insights_of_data/Comparison_length_english_spanish.png")
 
+filename_en = "es-en/europarl-v7.es-en.en"
+english_sentences = []
+with open(filename_en, 'r', encoding='UTF-8') as file:
+    for line in file:
+        english_sentences.append(line.rstrip())
+
+filename_es = "es-en/europarl-v7.es-en.es"
+spanish_sentences = []
+with open(filename_es, 'r', encoding='UTF-8') as file:
+    for line in file:
+        spanish_sentences.append(line.rstrip())
+
+ratio_english_spanish_sentences=[]
+for i in range(len(spanish_sentences)):
+
+    if len(english_sentences[i].split()) >0 and len(spanish_sentences[i].split()) >0:
+        ratio_english_spanish_sentences.append(len(english_sentences[i].split())/len(spanish_sentences[i].split())) 
+
+
+print(mean(ratio_english_spanish_sentences))
+
