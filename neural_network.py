@@ -17,7 +17,7 @@ import tensorflow as tf
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
-def tokenize(x):
+def tokenize(x: list[str]):
     """
     Tokenize x
     :param x: List of sentences/strings to be tokenized
@@ -30,11 +30,11 @@ def tokenize(x):
     return x_tk.texts_to_sequences(x), x_tk
 
 
-def pad(x, length=None):
+def pad(x: list[str], length=None):
     """
     Pad x
     :param x: List of sequences.
-    :param length: Length to pad the sequence to.  If None, use length of longest sequence in x.
+    :param length: Length to pad the sequence to.  If None, use length of the longest sequence in x.
     :return: Padded numpy array of sequences
     """
     # TODO: Implement
@@ -48,9 +48,8 @@ def pad(x, length=None):
 data = pd.read_csv('mixedtranslation.csv')
 english_sentences = data['english_sentences'].fillna("")
 spanish_sentences = data['spanish_sentences'].fillna("")
-# print(data)
-# train, test = train_test_split(df, test_size=0.2)
-# X_train, X_test, y_train, y_test = train_test_split(english_sentences, spanish_sentences, test_size=0.2, random_state=1)
+# print(data) train, test = train_test_split(df, test_size=0.2) X_train, X_test, y_train, y_test = train_test_split(
+# english_sentences, spanish_sentences, test_size=0.2, random_state=1)
 
 
 # X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.25, random_state=1) # 0.25 x 0.8 = 0.2
@@ -105,7 +104,7 @@ spanish_vocab_size = len(spanish_tokenizer.word_index)
 
 """ print('Data Preprocessed')
 print("Max English sentence length:", max_english_sequence_length)
-print("Max Spanishsentence length:", max_spanish_sequence_length)
+print("Max Spanish sentence length:", max_spanish_sequence_length)
 print("English vocabulary size:", english_vocab_size)
 print("Spanish vocabulary size:", spanish_vocab_size) """
 
