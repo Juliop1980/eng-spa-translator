@@ -1,13 +1,12 @@
 import numpy as np
 import string
 import num2words
-
+import pandas as pd
 from typing import List
 import csv
 
-# tree = etree.parse('es-en/europarl-v7.es-en.en')
-# notags = etree.tostring(tree, encoding='utf8', method='text')
-# print(notags)
+MAX_LENGTH_SENTENCES = 10
+
 filename_en = "es-en/europarl-v7.es-en.en"
 english_sentences = []
 with open(filename_en, 'r', encoding='UTF-8') as file:
@@ -25,10 +24,12 @@ nb_sentences_es = len(spanish_sentences)
 print("nb en sentences : " + str(nb_sentences_en))
 print("nb es sentences : " + str(nb_sentences_es))
 print("nb tot sentences : " + str(nb_sentences_en + nb_sentences_es))
+
 indexes = range(nb_sentences_en)
 # to randomly select 10 percent of the data
-indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 10))
-# indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 100))
+# indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 10))
+# randomly select 1 percent so the dataset is smaller
+indexes_ten_percent = np.random.choice(indexes, int(nb_sentences_en / 100))
 english_sentences = [english_sentences[i] for i in indexes_ten_percent]
 spanish_sentences = [spanish_sentences[i] for i in indexes_ten_percent]
 
@@ -73,5 +74,7 @@ with open('mixedtranslation.csv', 'w') as csvfile:
 
     writer.writeheader()
     for i in range(len(english_sentences_preprocessed)):
-        writer.writerow({'english_sentences': english_sentences_preprocessed[i],
-                         'spanish_sentences': spanish_sentences_preprocessed[i]})
+        if len(english_sentences_preprocessed[i].split(" ")) <= MAX_LENGTH_SENTENCES and \
+                len(spanish_sentences_preprocessed[i].split(" ")) <= MAX_LENGTH_SENTENCES:
+            writer.writerow({'english_sentences': english_sentences_preprocessed[i],
+                             'spanish_sentences': spanish_sentences_preprocessed[i]})
