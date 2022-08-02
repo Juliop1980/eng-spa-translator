@@ -37,8 +37,8 @@ import tensorflow as tf
 # tests.test_tokenize(tokenize)
 # read csv input data
 data = pd.read_csv('mixedtranslation.csv')
-english_sentences = data['english_sentences'].fillna("")
-spanish_sentences = data['spanish_sentences'].fillna("")
+spanish_sentences = data['english_sentences'].fillna("")
+english_sentences = data['spanish_sentences'].fillna("")
 
 english_sentences_aux = helper.load_data('small_vocab_en')
 print(english_sentences_aux[0])
