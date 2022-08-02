@@ -620,7 +620,8 @@ def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
 # input, target, and output to make some subjective quality judgements:
 #
 
-def evaluateRandomly(encoder, decoder, n=10):
+def evaluateRandomly(encoder, decoder, n=100):
+    number_of_correct_sentences= 0
     for i in range(n):
         pair = random.choice(pairs)
         print('>', pair[0])
@@ -628,7 +629,11 @@ def evaluateRandomly(encoder, decoder, n=10):
         output_words, attentions = evaluate(encoder, decoder, pair[0])
         output_sentence = ' '.join(output_words)
         print('<', output_sentence)
+
+        if output_sentence[:len(output_sentence) - 6] == pair[1]:
+            number_of_correct_sentences = number_of_correct_sentences + 1
         print('')
+    print(number_of_correct_sentences)
 
 
 ######################################################################
