@@ -1,2 +1,3 @@
 #ignore data since it is too big the directory
 es-en/
+glove.6B.100d.txt
